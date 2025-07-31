@@ -1,12 +1,29 @@
-﻿name: Hello World
+﻿name: Compile Java
 
 on:
   push:
+    paths:
+      - '**/Main.java'
     branches: [ main ]
 
 jobs:
-  hello:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Print message
-        run: echo "Hello, GitHub Actions!"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Compile Main.java
+        run: javac Main.java
+
+      - name: Check class file
+        run: |
+          echo "Main.class created:"
+          ls -l Main.class
